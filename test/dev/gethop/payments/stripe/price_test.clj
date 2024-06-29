@@ -1,3 +1,7 @@
+;; This Source Code Form is subject to the terms of the Mozilla Public
+;; License, v. 2.0. If a copy of the MPL was not distributed with this
+;; file, You can obtain one at http://mozilla.org/MPL/2.0/
+
 (ns dev.gethop.payments.stripe.price-test
   (:require [clojure.string :as str]
             [clojure.test :refer :all]
@@ -33,7 +37,7 @@
   (let [payment-adapter (test-utils/init-payment-adapter)]
     (testing "Update price"
       (let [id (get-new-price-id payment-adapter)
-            {:keys [success? price] :as r} (core/update-price payment-adapter id {:active false})]
+            {:keys [success? price]} (core/update-price payment-adapter id {:active false})]
         (is success?)
         (is (map? price))
         (is (false? (:active price)))))
@@ -62,7 +66,7 @@
     (testing "Get all prices"
       (let [now (test-utils/now-unix-timestamp)
             id (get-new-price-id payment-adapter)
-            {success? :success? {:keys [data] :as price} :price :as r}
+            {success? :success? {:keys [data] :as price} :price}
             (core/get-all-prices payment-adapter {:created {:gte now}})]
         (is success?)
         (is (map? price))
